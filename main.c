@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 21:25:52 by trobicho          #+#    #+#             */
-/*   Updated: 2019/04/21 06:12:49 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/04/22 17:08:46 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,19 @@ int main(int ac, char **av)
 		return (-1);
 	mlx_hook(myml.win_ptr, 2, 0, &ft_key_hook, &myml);
 	mlx_hook(myml.win_ptr, 4, 0, &ft_mouse_press, &myml);
-	myml.fract.max_iter = 500;
+	mlx_hook(myml.win_ptr, 6, 0, &ft_mouse_move, &myml);
+	myml.lock_c = 1;
+	myml.type = type_fix;
+	myml.fract.max_iter = 50;
+	myml.fract.omega = -1.401155;
+	myml.fract.c = (t_complex){0.0, 0.0};
 	myml.min = (t_complex){-2.0, -1.3};
 	myml.max = (t_complex){0.6, 1.3};
 	myml.disp_tree = 0;
-	myml.ptr_func = &mandelbrot;
+	myml.ptr_func = &batman;
 	myml.tree = quad;
 	myml.nb_tree = 4;
+	myml.max_quad_len = 256;
 	i = 0;
 	while (i < 4)
 	{
@@ -44,6 +50,7 @@ int main(int ac, char **av)
 		quad[i].zone.x_max = (1024 / 2) * (i % 2 + 1);
 		quad[i].zone.y_max = (1024 / 2) * (i / 2 + 1);
 		quad[i].child = NULL;
+		quad[i].use_child = 0;
 		i++;
 	}
 	render(&myml);
